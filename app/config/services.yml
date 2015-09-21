@@ -1,0 +1,4 @@
+services:
+    nhb_hostit_virtual_host_helper:
+        class: AppBundle\Service\VirtualHostHelper
+        arguments: ['%virtual_host_config_path%', '%hosts_path%']
