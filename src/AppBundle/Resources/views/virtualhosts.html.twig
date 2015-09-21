@@ -1,0 +1,38 @@
+{% for virtualHost in virtualHosts %}
+    <tr class="element-item">
+        <td>{{ loop.index }}</td>
+        <td>
+            <a href="http://{{ virtualHost.serverName }}/">
+                {{ virtualHost.serverName }}
+            </a>
+        </td>
+        <td>{{ virtualHost.documentRoot }}</td>
+        <td>
+            <div class="btn-group btn-group-sm" role="group">
+                <a class="btn btn-primary pull-left" href="{{ path('host_it_edit_virtual_host', {serverName: virtualHost.serverName}) }}">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
+                </a>
+
+                <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn btn-danger dropdown-toggle" id="dropdownMenu{{ loop.index }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        Delete
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" ara-labeledby="dropdownMenu{{ loop.index }}">
+                        <li>
+                            <a href="{{ path('host_it_remove_virtual_host', {serverName: virtualHost.serverName, deleteFiles: 0}) }}">
+                                Delete
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('host_it_remove_virtual_host', {serverName: virtualHost.serverName, deleteFiles: 1}) }}">
+                                Delete with all files
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </td>
+    </tr>
+{% endfor %}

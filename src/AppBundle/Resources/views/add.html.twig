@@ -1,0 +1,10 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block content %}
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        {{ form_widget(form) }}
+
+        <input type="submit" class="btn btn-sm btn-primary" value="Add">
+        <a href="{{ path('host_it_list_virtual_hosts') }}" class="btn btn-sm btn-default">Cancel</a>
+    {{ form_end(form) }}
+{% endblock content %}

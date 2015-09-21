@@ -1,9 +1,39 @@
-{% extends 'AppBundle::base.html.twig' %}
+{% extends 'AppBundle::layout.html.twig' %}
 
 {% block content %}
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
+    {% for alert in app.session.flashbag.get('alert') %}
+        <div class="alert alert-{{ alert.type }} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ alert.text }}
+        </div>
+    {% endfor %}
 
-        <input type="submit" value="Add">
-    {{ form_end(form) }}
+    <div>
+        <div class="btn-group" role="group">
+            <a href="{{ path('host_it_add_virtual_host') }}" class="btn btn-sm btn-primary">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                Add New
+            </button>
+            <a href="{{ path('host_it_clear_virtual_hosts') }}" class="btn btn-sm btn-default" title="Clear all hosts where document root is empty">
+                Clear Hosts
+            </a>
+        </div>
+        <br><br>
+    </div>
+    <table class="table table-striped table-sortable">
+        <thead>
+            <tr>
+                <th class="active">#</th>
+                <th>Server Name</th>
+                <th>Document Root</th>
+                <th class="disabled">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% include 'AppBundle::virtualhosts.html.twig' %}
+        </tbody>
+    </table>
+
 {% endblock content %}

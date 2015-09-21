@@ -1,0 +1,13 @@
+#content {
+    padding-top: 100px;
+    padding-bottom: 20px;
+}
+
+.table-sortable th:not(.disabled) {
+    cursor: pointer;
+}
+
+.table-sortable > thead > tr > th.active {
+    background-color: transparent;
+    color: #337ab7;
+}

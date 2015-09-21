@@ -11,11 +11,11 @@ class VirtualHostType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('documentRoot', 'text', array(
-                'label' => 'Document Root',
-            ))
             ->add('serverName', 'text', array(
                 'label' => 'Server Name',
+            ))
+            ->add('documentRoot', 'text', array(
+                'label' => 'Document Root',
             ))
         ;
     }

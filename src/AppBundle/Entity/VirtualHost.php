@@ -2,49 +2,21 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * VirtualHost
- *
- * @ORM\Table()
- * @ORM\Entity
  */
 class VirtualHost
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
      * @var string
-     *
-     * @ORM\Column(name="documentRoot", type="string", length=255)
      */
     private $documentRoot;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="serverName", type="string", length=255)
      */
     private $serverName;
 
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set documentRoot
@@ -56,6 +28,7 @@ class VirtualHost
     public function setDocumentRoot($documentRoot)
     {
         $this->documentRoot = $documentRoot;
+        $this->validateDocumentRoot();
 
         return $this;
     }
@@ -92,5 +65,55 @@ class VirtualHost
     public function getServerName()
     {
         return $this->serverName;
+    }
+
+    /**
+     * @param string $documentRoot
+     *
+     * @return string
+     */
+    public function validateDocumentRoot()
+    {
+        $this->documentRoot = preg_replace('/\\\/', '/', $this->documentRoot);
+    }
+
+    /**
+     * @return string
+     */
+    public function getVirtualHostConfigEntry()
+    {
+        if (!$this->documentRoot || !$this->serverName) {
+            return '';
+        }
+
+        $entry = "<VirtualHost %s>".PHP_EOL.
+                 "\tDocumentRoot \"%s\"".PHP_EOL.
+                 "\tServerName %s".PHP_EOL.
+                 "\t<Directory \"%s\">".PHP_EOL.
+                 "\t\tOptions FollowSymLinks Indexes".PHP_EOL.
+                 "\t\tAllowOverride All".PHP_EOL.
+                 "\t\tRequire all granted".PHP_EOL.
+                 "\t</Directory>".PHP_EOL.
+                 "</VirtualHost>".PHP_EOL;
+
+        return sprintf(
+            $entry,
+            '127.0.0.1',
+            addslashes($this->documentRoot),
+            addslashes($this->serverName),
+            addslashes($this->documentRoot)
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getHostsEntry()
+    {
+        if (!$this->serverName) {
+            return '';
+        }
+
+        return '127.0.0.1 '.addslashes($this->serverName).PHP_EOL;
     }
 }
